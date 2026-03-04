@@ -2,6 +2,7 @@ all:
 	@mkdir -p build temp
 
 	avr-gcc -nostdlib -x assembler-with-cpp -mmcu=atmega328p -Os -g -c src/boot/boot.S -o temp/boot.o
+	avr-gcc -nostdlib -mmcu=atmega328p -Os -g -c src/kernel/main.c -o temp/kernel.o
 
 	avr-gcc -nostdlib -mmcu=atmega328p -Os -g temp/*.o -o build/main.o
 

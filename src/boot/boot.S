@@ -1,10 +1,11 @@
 .org 0x0000
+.extern loop_kernel
+.extern setup_kernel
 
 _start:
-    ldi r16, 0b00100000
-    out 0x04, r16
+    rcall setup_kernel
 
 _loop:
-    cbi 0x05, 5
+    rcall loop_kernel
 
     rjmp _loop
