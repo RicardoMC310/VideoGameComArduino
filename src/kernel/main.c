@@ -1,19 +1,18 @@
-#include "hd/delay.h"
+#include "hd/millis.h"
+#include <avr/io.h>
+#include <avr/interrupt.h>
 
-#include <stdint.h>
-
-void setup_kernel()
-{
-    (*(volatile uint8_t *)0x24) |= (1 << 5);
+void setup_kernel() {
+    DDRB |= (1 << PB5);
+    PORTB &= ~(1 << PB5);
 }
 
-void loop_kernel()
-{
-    (*(volatile uint8_t *)0x25) |= (1 << 5);
-
-    delay(500);
-
-    (*(volatile uint8_t *)0x25) &= ~(1 << 5);
-
-    delay(100);
+void loop_kernel() {
+    static uint32_t lastTime = 0;
+    uint32_t currentTime = millis1();
+    
+    if (currentTime - lastTime >= 1000) {
+        lastTime = currentTime;
+        PORTB ^= (1 << PB5);
+    }
 }
