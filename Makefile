@@ -7,11 +7,11 @@ all:
 	avr-gcc -nostdlib -mmcu=atmega328p -Os -g -c src/hd/*.c -o temp/hd-c.o -Iinclude
 	avr-gcc -nostdlib -mmcu=atmega328p -Os -g -c src/kernel/main.c -o temp/kernel.o -Iinclude
 
-	avr-gcc -nostdlib -mmcu=atmega328p -Os -g temp/*.o -o build/main.o
+	avr-gcc -nostdlib -mmcu=atmega328p -Os -g temp/*.o -o build/main.elf
 
-	avr-objcopy -O ihex build/main.o build/main.hex
+	avr-objcopy -O ihex build/main.elf build/main.hex
 
-	avr-size -C --mcu=atmega328p build/main.o
+	avr-size -C --mcu=atmega328p build/main.elf
 
 upload:
 	avrdude -c arduino -p m328p -P /dev/ttyUSB0 -b 115200 -U flash:w:build/main.hex:i
