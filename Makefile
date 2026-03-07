@@ -12,6 +12,11 @@ all:
 	avr-gcc -mmcu=$(MCU) -Os -g -DF_CPU=$(F_CPU)UL -c src/hd/delay.c -o temp/delay.o -Iinclude
 	avr-gcc -mmcu=$(MCU) -Os -g -DF_CPU=$(F_CPU)UL -c src/hd/millis.c -o temp/millis.o -Iinclude
 	avr-gcc -mmcu=$(MCU) -Os -g -DF_CPU=$(F_CPU)UL -c src/kernel/main.c -o temp/kernel.o -Iinclude
+	avr-gcc -mmcu=$(MCU) -Os -g -DF_CPU=$(F_CPU)UL -c src/card/card.c -o temp/card.o -Iinclude
+
+	# Compilar C apps
+	avr-gcc -mmcu=$(MCU) -Os -g -DF_CPU=$(F_CPU)UL -c apps/app1.c -o temp/app1.o -Iinclude
+	avr-gcc -mmcu=$(MCU) -Os -g -DF_CPU=$(F_CPU)UL -c apps/app2.c -o temp/app2.o -Iinclude
 
 	# Linkar
 	avr-gcc -mmcu=$(MCU) -Os -g temp/*.o -o build/main.elf
