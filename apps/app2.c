@@ -1,29 +1,57 @@
 #include "card/card.h"
 #include "hd/millis.h"
+#include "hd/delay.h"
+#include "hd/button.h"
 
 #include <avr/io.h>
-
-static uint32_t last_time = 0;
 
 static void app_setup()
 {
     DDRB |= (1 << PB4); // LED como saída
-    last_time = 0;
 }
 
 static void app_update()
 {
-    uint32_t current_time = millis1();
-
-    if (current_time - last_time >= 150)
+    if (button_pressed(BTN_UP))
     {
         PORTB ^= (1 << PB4);
-        last_time = current_time;
+        delay(700);
+    }
+
+    if (button_pressed(BTN_DOWN))
+    {
+        PORTB ^= (1 << PB4);
+        delay(800);
+    }
+
+    if (button_pressed(BTN_LEFT))
+    {
+        PORTB ^= (1 << PB4);
+        delay(900);
+    }
+
+    if (button_pressed(BTN_RIGHT))
+    {
+        PORTB ^= (1 << PB4);
+        delay(1000);
+    }
+
+    if (button_pressed(BTN_A))
+    {
+        PORTB ^= (1 << PB4);
+        delay(1500);
+    }
+
+    if (button_pressed(BTN_B))
+    {
+        PORTB ^= (1 << PB4);
+        delay(2000);
     }
 }
 
 static void app_exit()
 {
+    PORTB &= ~(1 << PB4);
     DDRB &= ~(1 << PB4); // LED como entrada
 }
 
