@@ -5,47 +5,38 @@
 
 #include <avr/io.h>
 
+static volatile uint32_t last_time;
+static volatile uint32_t timer;
+
 static void app_setup()
 {
     DDRB |= (1 << PB4); // LED como saída
+    PORTB &= ~(1 << PB4);
+    last_time = 0;
+    timer = 350;
 }
 
 static void app_update()
 {
     if (button_pressed(BTN_UP))
-    {
-        PORTB ^= (1 << PB4);
-        delay(100);
-    }
-
+        timer = 100;
     if (button_pressed(BTN_DOWN))
-    {
-        PORTB ^= (1 << PB4);
-        delay(200);
-    }
-
+        timer = 200;
     if (button_pressed(BTN_LEFT))
-    {
-        PORTB ^= (1 << PB4);
-        delay(300);
-    }
-
+        timer = 300;
     if (button_pressed(BTN_RIGHT))
-    {
-        PORTB ^= (1 << PB4);
-        delay(400);
-    }
-
+        timer = 400;
     if (button_pressed(BTN_A))
-    {
-        PORTB ^= (1 << PB4);
-        delay(500);
-    }
-
+        timer = 500;
     if (button_pressed(BTN_B))
+        timer = 600;
+
+    uint32_t now = millis1();
+
+    if (now - last_time >= timer)
     {
         PORTB ^= (1 << PB4);
-        delay(600);
+        last_time = now;
     }
 }
 

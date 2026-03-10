@@ -4,11 +4,16 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-void check_change_button_card();
+static volatile uint32_t last_interrupt;
+static volatile uint8_t change_card_flag = 0;
+
 void init_buttons();
+void change_card();
 
 void setup_kernel()
 {
+    last_interrupt = 0;
+
     init_buttons();
 
     card_init();
@@ -16,38 +21,62 @@ void setup_kernel()
 
 void loop_kernel()
 {
-    check_change_button_card();    
+    if (change_card_flag)
+        change_card();
+
     card_update();
 }
 
-void check_change_button_card()
+ISR(INT0_vect)
 {
-    if (PIND & (1 << PD2))
-    {
-        card_change();
-        delay(250);
-    }
+    change_card_flag = 1;
 }
 
-void init_buttons() {
-    DDRD  &= ~(1 << PD2);  // entrada
-    PORTD &= ~(1 << PD2); // pull-up DESLIGADO
+void change_card()
+{
+    static uint32_t last_interrupt = 0;
 
-    DDRD  &= ~(1 << PD3);
+    uint32_t now = millis1();
+
+    if (now - last_interrupt >= 250)
+    {
+        card_change();
+        last_interrupt = now;
+    }
+
+    change_card_flag = 0;
+}
+
+void init_isr_button_change_card()
+{
+    DDRD &= ~(1 << PD2);  // entrada
+    PORTD |= (1 << PD2); // pull-up DESLIGADO
+
+    EICRA |= (1 << ISC01);   // falling edge
+    EICRA &= ~(1 << ISC00);
+
+    EIMSK |= (1 << INT0);
+}
+
+void init_buttons()
+{
+    init_isr_button_change_card();
+
+    DDRD &= ~(1 << PD3);
     PORTD &= ~(1 << PD3);
 
-    DDRD  &= ~(1 << PD4);
+    DDRD &= ~(1 << PD4);
     PORTD &= ~(1 << PD4);
 
-    DDRD  &= ~(1 << PD5);
+    DDRD &= ~(1 << PD5);
     PORTD &= ~(1 << PD5);
 
-    DDRD  &= ~(1 << PD6);
+    DDRD &= ~(1 << PD6);
     PORTD &= ~(1 << PD6);
 
-    DDRD  &= ~(1 << PD7);
+    DDRD &= ~(1 << PD7);
     PORTD &= ~(1 << PD7);
 
-    DDRB  &= ~(1 << PB0);
+    DDRB &= ~(1 << PB0);
     PORTB &= ~(1 << PB0);
 }

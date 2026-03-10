@@ -8,10 +8,14 @@ ISR(TIMER1_COMPA_vect) {
     timer1_millis++;
 }
 
-uint32_t millis1(void) {
+uint32_t millis1(void)
+{
     uint32_t m;
+    uint8_t sreg = SREG;
+
     cli();
     m = timer1_millis;
-    sei();
+    SREG = sreg;
+
     return m;
 }
