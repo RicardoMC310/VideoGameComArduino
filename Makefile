@@ -12,6 +12,7 @@ all:
 	avr-gcc -mmcu=$(MCU) -Os -g -DF_CPU=$(F_CPU)UL -c src/hd/delay.c -o temp/delay.o -Iinclude
 	avr-gcc -mmcu=$(MCU) -Os -g -DF_CPU=$(F_CPU)UL -c src/hd/millis.c -o temp/millis.o -Iinclude
 	avr-gcc -mmcu=$(MCU) -Os -g -DF_CPU=$(F_CPU)UL -c src/hd/button.c -o temp/button.o -Iinclude
+	avr-gcc -mmcu=$(MCU) -Os -g -DF_CPU=$(F_CPU)UL -c src/hd/sound.c -o temp/sound.o -Iinclude
 	avr-gcc -mmcu=$(MCU) -Os -g -DF_CPU=$(F_CPU)UL -c src/kernel/main.c -o temp/kernel.o -Iinclude
 	avr-gcc -mmcu=$(MCU) -Os -g -DF_CPU=$(F_CPU)UL -c src/card/card.c -o temp/card.o -Iinclude
 

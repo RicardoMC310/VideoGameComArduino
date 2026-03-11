@@ -1,5 +1,6 @@
 #include "hd/millis.h"
 #include "hd/delay.h"
+#include "hd/sound.h"
 #include "card/card.h"
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -15,6 +16,7 @@ void setup_kernel()
     last_interrupt = 0;
 
     init_buttons();
+    sound_init();
 
     card_init();
 }
@@ -25,6 +27,7 @@ void loop_kernel()
         change_card();
 
     card_update();
+    sound_update();
 }
 
 ISR(INT0_vect)
