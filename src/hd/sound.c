@@ -15,7 +15,6 @@ static volatile uint8_t melody_playing = 0;
 static volatile uint16_t bpm = 120;
 static volatile uint32_t beat_ms = 500;
 
-// Flag para indicar que a nota terminou
 static volatile uint8_t note_finished = 0;
 
 ISR(TIMER2_COMPA_vect)
